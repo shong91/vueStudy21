@@ -10,6 +10,8 @@
         
         <button @click="increment"> 더하기 </button>
         <button @click="decrement"> 빼기 </button>
+
+        <button @click="incrementActions"> mapaction 더하기 </button>
     </div>
 </template>
 
@@ -18,7 +20,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import store from 'src/stores'
 import StoreTest from 'src/components/StoreTest'
-import { mapState, mapGetters, mapMutations } from 'vuex'; 
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'; 
 
 Vue.use(vuex)
 const app = new Vue({
@@ -87,6 +89,7 @@ export default new Vuex.Store({
 // 3. mapMutation 
 // 변이mutation 은 getter와 다르게 store.mutation 으로 직접 접근이 불가하다. 변이를 호출하기 위해서는 반드시 .commit() 을 사용.
 // 변이는 반드시 동기적이어야한다. WHY? 비동기처리 시 status 추적 어려움, 네트워크/서버 상태 등의 외부 요인에 따라 콜백 함수의 호출 타이밍 달라짐.
+// 그렇다면 비동기 처리는 어떻게? => Actions 를 사용. 
 export default {
     methods: {
         // increment() {
@@ -107,9 +110,22 @@ export default {
             this.DECREMENT({ count: 2 })
         }
     },
+}
 
-    
-
+// 4. mapActions
+// actions 은 dispatch() 를 통해 사용. 
+export default {
+    methods:{
+        // incrementActions () {
+        //     store.dispatch('incrementActions', 3)
+        // }
+        ...mapActions([
+            'increment'
+        ]),
+        incrementActions (){
+            this.increment(3)
+        }
+    }
 }
 </script>
 
