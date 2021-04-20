@@ -162,11 +162,11 @@ new Vue({
     </template>
 
     export default {
-      name: 'Foo',
+      name: 'Foo' ,
       methods: {
         onClick() {
           this.$emit('click', {message: 'Hi'})
-        }
+        } 
       }
     }
 */
