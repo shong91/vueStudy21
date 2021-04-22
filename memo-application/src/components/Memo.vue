@@ -23,15 +23,23 @@
 <script>
 export default {
     name: 'Memo', 
-    data () {
-        return {
-            isEditing: false, 
-        }
-    },
+    // data () {
+    //     return {
+    //         isEditing: false, 
+    //     }
+    // },
     // 1. 부모에게 내려받은 props 를 등록한다. (MemoApp > ul > v-for :memo="memo")
     props: {
         memo: {
             type: Object, 
+        },
+        editingId: {
+            type: Number
+        }
+    },
+    computed: {
+        isEditing() {
+            return this.memo.id === this.editingId; 
         }
     },
     methods: {
@@ -41,14 +49,18 @@ export default {
             this.$emit('deleteMemo', id); 
         },
         handleDbClick (){
-            this.isEditing = true; 
+            // this.isEditing = true; 
+            this.$emit('setEditingId', this.memo.id);
+
             // 데이터 값이 변경됨에 따라 리렌더링 할 때, 1)리렌더링 2)refs.content 값 참조 의 순으로 되어야 하나, 이 순서는 보장되지 않는다. (content is undefined)
             // =>  이를 방지하기 위해 nextTick() 사용: Vue.js에서 데이터갱신 후 UI까지 완료한 뒤에 nextTick에 있는 함수를 최종적으로 수행한다. 
             this.$$nextTick(() => {
                 this.$$refs.content.focus();
             });
         },
-
+        handleBlur() {
+            this.$emit('resetEditingId'); 
+        },
         updateMemo(e) {
             const id = this.memo.id; 
             const content = e.target.value.trim(); 
@@ -59,7 +71,8 @@ export default {
             }
 
             this.$emit('updateMemo', {id, content}); 
-            this.isEditing = false; 
+            // this.isEditing = false; 
+            this.$refs.content.blur(); 
             
         }
     }
