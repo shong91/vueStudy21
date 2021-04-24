@@ -4,6 +4,8 @@
         이를 방지하기 위해 v-if/else 분기 처리를 해준다. -->
         <post-view v-if="post" :post="post" />
         <p v-else> 게시글을 불러오는 중 ..</p>
+        <router-link :to="{ name: 'PostEditPage'} "> 수정</router-link>
+        <button @click="onDelete"> 삭제 </button>
         <router-link :to="{ name: 'PostListPage'} "> 목록 </router-link>
     </div>
 </template>
@@ -11,6 +13,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import PostView from '../components/PostView.vue';
+import api from '@/api'
 
 export default {
   components: { PostView },
@@ -22,7 +25,7 @@ export default {
         }
     },
     created() {
-        this.fetchPost( `/${this.postId}`)
+        this.fetchPost(this.postId)
         .catch(err => {
             alert(err.response.data.msg)
             this.$router.back()
@@ -38,7 +41,26 @@ export default {
     methods: {
         ...mapActions([
             'fetchPost',
-        ])
+        ]),
+        onDelete(){ 
+            const { id } = this.post
+            console.log ('post: ', id)
+            console.log('postId:', this.postId)
+
+            api.delete(`/posts/${id}`)
+            .then(res => {
+                alert('게시글이 성공적으로 삭제되었습니다. ')
+                this.$router.push({ name: 'PostListPage' })
+            })
+            .catch(err => {
+                if(err.response.status === 401) {
+                    alert('로그인이 필요합니다. ')
+                    this.$router.push({ name: 'Signin'})
+                } else {
+                    alert(err.response.data.msg)
+                }
+            })
+        }
     }
 
 }

@@ -18,7 +18,7 @@ export default {
             required: true, 
             validator(post) {
                 const isValidPostId = typeof post.id === 'number'
-                const isValidTitle = !!post.title && post.title.length; // !! 가 뭐지?
+                const isValidTitle = !!post.title && post.title.length; // !! 가 뭐지? Truthy, Falsy 값을 이용한 검사 방법
                 const isValidContents = post.contents && post.contents.length; 
                 return isValidPostId && isValidTitle && isValidContents
                 
