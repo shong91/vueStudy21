@@ -45,7 +45,7 @@ export default {
                 // 해당 url이 아닌 다른 접근으로 해당 컴포넌트에 접근할 시를 대비하여 onSubmit() 에서도 가드 처리를 해주는 것을 권장한다.
                 if(err.response.status === 401) {
                     alert('로그인이 필요합니다. ')
-                    this.$router.push({name: 'Signin'})
+                this.$router.push({name: 'Signin'})
                 } else if (err.response.status === 403) {
                     alert('게시글 수정 권한이 없습니다: ', err.response.data.msg) 
                     this.$router.back()

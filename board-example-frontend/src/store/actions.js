@@ -2,7 +2,8 @@ import api from '@/api'
 import { 
     FETCH_POST_LIST, FETCH_POST, 
     SET_ACCESS_TOKEN, SET_MY_INFO,
-    DESTROY_ACCESS_TOKEN, DESTROY_MY_INFO
+    DESTROY_ACCESS_TOKEN, DESTROY_MY_INFO,
+    UPDATE_COMMENT, EDIT_COMMENT, DELETE_COMMENT
  } from './mutations-types'
 
 export default {
@@ -53,6 +54,30 @@ export default {
     signout({ commit }) {
         commit(DESTROY_ACCESS_TOKEN)
         commit(DESTROY_MY_INFO)
+    },
+    createComment ({ commit, state }, comment) {
+        console.log('execute createComment in actions.js')
+        const postId = state.post.id
+        return api.post(`/posts/${postId}/comments`, { contents: comment })
+        .then(res => {
+        commit(UPDATE_COMMENT, res.data)
+        })
+      },
+    editComment({ commit, state }, { commentId, comment }) {
+        const postId = state.post.id
+        return api.put(`/posts/${postId}/comments/${commentId}`, { contents: comment })
+        .then(res => {
+            commit(EDIT_COMMENT, res.data)
+        })
+        .catch()
+    },
+    deleteComment({ commit, state }, commentId) {
+        const postId = state.post.id
+        return api.delete(`/posts/${postId}/comments/${commentId}`)
+        .then(res => {
+            commit(DELETE_COMMENT, commentId)
+        })
+        .catch()
     }
 
 }
