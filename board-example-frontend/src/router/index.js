@@ -63,7 +63,9 @@ export default new Router({
       props: {
         default: true
       },
-      // 가드 추가
+      // 네비게이션 가드: Vue Router 로 특정 URL 에 접근할 때, 해당 URL의 접근을 막는 방법. 
+      // to: 이동할 url / from: 현재 url / next: to 로 이동하기 위해 호출하는 함수
+      // Ref :https://joshua1988.github.io/web-development/vuejs/vue-router-navigation-guards/
       beforeEnter(to, from, next){
         const { isAuthorized } = store.getters
         if(!isAuthorized){ 
@@ -74,6 +76,7 @@ export default new Router({
 
         store.dispatch('fetchPost', to.params.postId)
         .then(() => {
+          // () => {} : 매개변수 없는 함수는 () 가 필요. 
           // 요청 성공 시 && 작성자 본인 => 다음 라우트로 이동한다.
           const post = store.state.post
           const isAuthor = post.user.id === store.state.me.id

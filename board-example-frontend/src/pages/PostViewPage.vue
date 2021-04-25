@@ -35,8 +35,8 @@ export default {
             alert(err.response.data.msg)
             this.$router.back()
         }); 
-        // 1. 왜 그냥 this.postId 를 하면 안되는거지? 
-        // 2. catch() 문을 action.js 에서 처리할 경우 back() 이 실행되지 않음. 
+        // 2. catch() 문을 action.js 에서 처리할 경우 $router.() 이 실행되지 않음.
+        // [this] 의 문제 .. -> 어디로 해줘야 되지?  
     },
     computed: {
         ...mapState([

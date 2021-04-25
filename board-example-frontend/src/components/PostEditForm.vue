@@ -23,6 +23,7 @@
 <script>
 export default {
     name: 'PostEditForm', 
+    // 부모 컴포넌트에 있는 data 를 자식 컴포넌트로 넘겨줄 때 props 옵션을 사용한다 
     props: {
         post: {
             type: Object, 

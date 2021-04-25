@@ -10,7 +10,7 @@ export default {
     fetchPostList({ commit }){
         return api.get('/posts')
         .then(res => {
-            commit(FETCH_POST_LIST, res.data); // 응답으로 내려온 게시물 데이터를 FETCH_POST_LIST 변이의 실행과 함께 인자로 넘겨준다.  
+            commit(FETCH_POST_LIST, res.data); // 응답으로 내려온 게시물 데이터를 FETCH_POST_LIST 의 실행과 함께 인자로 넘겨준다.  
         })
         .catch(); 
     },
@@ -19,7 +19,11 @@ export default {
         .then(res => {
             commit(FETCH_POST, res.data)
         })
-        .catch();
+        .catch(err => {
+            // Promise.reject(err)
+            // actions.js 단에서 다른 경로로 라우팅 해주고 싶다면 commit() 을 통해 다른 action 을 부르면 될 것 같은데.. res.data 가 없어서 일단 보류.
+            // commit(FETCH_POST_LIST)
+        });
     },
     signin({ commit }, payload) {
         const { email, password } = payload
